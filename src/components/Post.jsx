@@ -3,8 +3,13 @@ import { Comment } from "./Comment";
 import { Avatar } from "./Avatar";
 import { format, formatDistanceToNow } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR'
+import { useState } from "react";
  
 export function Post({ author, content, publishedAt }) {
+    const comments = useState([
+        
+    ])
+
     const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", 
     { 
         locale: ptBR, 
@@ -14,6 +19,11 @@ export function Post({ author, content, publishedAt }) {
         locale: ptBR,
         addSuffixx: true,
         })
+
+    function handleCreateNewComment() {
+        event.preventDefault()
+        comment.push()
+    }
 
   return (
     <article className={styles.post}>
@@ -45,7 +55,7 @@ export function Post({ author, content, publishedAt }) {
           })}
       </div>
 
-      <form className={styles.commentForm}>
+      <form onSubmit={handleCreateNewComment} className={styles.commentForm}>
         <strong>
             Deixe seu feedback
         </strong>
