@@ -6,8 +6,9 @@ import ptBR from 'date-fns/locale/pt-BR'
 import { useState } from "react";
  
 export function Post({ author, content, publishedAt }) {
-    const comments = useState([
-        
+    const [comments, setComments] = useState([
+        1,
+        2,
     ])
 
     const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", 
@@ -22,7 +23,8 @@ export function Post({ author, content, publishedAt }) {
 
     function handleCreateNewComment() {
         event.preventDefault()
-        comment.push()
+
+        setComments([...comments, comments.length + 1])
     }
 
   return (
@@ -67,9 +69,9 @@ export function Post({ author, content, publishedAt }) {
       </form>
 
       <div className={styles.commentList}>
-        <Comment />
-        <Comment />
-        <Comment />
+       {comments.map(comment => {
+        return<Comment />
+       })}
       </div>
 
     </article>
