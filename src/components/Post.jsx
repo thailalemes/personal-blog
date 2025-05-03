@@ -7,9 +7,10 @@ import { useState } from "react";
  
 export function Post({ author, content, publishedAt }) {
     const [comments, setComments] = useState([
-        1,
-        2,
-    ])
+       'You rock!'
+    ]);
+
+    const [newCommentText, setNewCommentText] = useState('')
 
     const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", 
     { 
@@ -19,12 +20,20 @@ export function Post({ author, content, publishedAt }) {
     const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
         locale: ptBR,
         addSuffixx: true,
-        })
+        });
 
     function handleCreateNewComment() {
         event.preventDefault()
 
         setComments([...comments, comments.length + 1])
+    };
+
+    function handleNewCommentChange() {
+        setNewCommentText(event.target.value)
+    }
+
+    function deleteComment(comment) {
+        console.log(`Deletar comentario${comment}`)
     }
 
   return (
@@ -50,9 +59,9 @@ export function Post({ author, content, publishedAt }) {
       <div className={styles.content}>
           {content.map(line => {
             if (line.type === 'paragraph') {
-                return <p>{line.content}</p>;
+                return <p key={line.content}>{line.content}</p>;
             } else if (line.type === 'link') {
-                return <p><a href="#">{line.content}</a></p>
+                return <p key={line.content}><a href="#">{line.content}</a></p>
             }
           })}
       </div>
@@ -62,7 +71,10 @@ export function Post({ author, content, publishedAt }) {
             Deixe seu feedback
         </strong>
 
-        <textarea placeholder="Deixe um comentario"/>
+        <textarea 
+        placeholder="Deixe um comentario"
+        onChange={handleNewCommentChange}
+        />
         <footer>
             <button type="submit">Publicar</button>
         </footer>
@@ -70,7 +82,13 @@ export function Post({ author, content, publishedAt }) {
 
       <div className={styles.commentList}>
        {comments.map(comment => {
-        return<Comment />
+        return (
+        <Comment 
+        key={comment}
+        content={comment} 
+        onDeleteComment={deleteComment}
+        />
+        )
        })}
       </div>
 
